@@ -143,8 +143,6 @@ def post_hero_upload_to(instance, filename):
 
 
 class Post(TimestampedModel):
-    hero = models.ImageField(_('hero'), upload_to=post_hero_upload_to,
-                             blank=True)
     subject = models.CharField(_('subject'), max_length=100)
     slug = models.SlugField(_('slug'), max_length=100, unique=True)
     summary = models.TextField(_('summary'), blank=True, null=True)
@@ -156,7 +154,7 @@ class Post(TimestampedModel):
     objects = PostManager()
 
     class Meta:
-        ordering = ('-created_on', )
+        ordering = ('-modified_on', )
 
     def __unicode__(self):
         return self.subject
