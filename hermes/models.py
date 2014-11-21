@@ -47,6 +47,9 @@ class Category(models.Model):
     def __unicode__(self):
         return u" > ".join([category.title for category in self.hierarchy()])
 
+    def __str__(self):
+        return self.__unicode__()
+
     @models.permalink
     def get_absolute_url(self):
         return ('hermes_category_post_list', (), {
@@ -157,6 +160,9 @@ class Post(TimestampedModel):
 
     def __unicode__(self):
         return self.subject
+
+    def __str__(self):
+        return self.__unicode__()
 
     @models.permalink
     def get_absolute_url(self):
