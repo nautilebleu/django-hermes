@@ -7,6 +7,7 @@ class PostListView(ListView):
     context_object_name = 'posts'
     model = Post
     template_name = 'hermes/post_list.html'
+    paginate_by=10
 
 
 class CategoryPostListView(PostListView):
