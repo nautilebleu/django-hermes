@@ -23,7 +23,6 @@ class ArchivePostListView(PostListView):
 
         return self.model.objects.created_on(year=year, month=month, day=day)
 
-
 class PostDetail(DetailView):
     context_object_name = 'post'
     model = Post

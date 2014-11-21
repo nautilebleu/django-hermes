@@ -6,7 +6,7 @@ from .feeds import LatestPostFeed
 urlpatterns = patterns(
     '',
     url(
-        regex=r'^(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/(?P<slug>[\w-]+)/$',
+        regex=r'^(?P<slug>[\w-]+)/$',
         view=PostDetail.as_view(),
         name='hermes_post_detail',
     ),

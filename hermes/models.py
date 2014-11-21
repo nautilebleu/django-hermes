@@ -32,7 +32,7 @@ class CategoryManager(models.Manager):
 class Category(models.Model):
     title = models.CharField(_('title'), max_length=100)
     parent = models.ForeignKey('self', blank=True, null=True)
-    slug = models.CharField(blank=True, default='', max_length='500')
+    slug = models.CharField(blank=True, default='', max_length='500', unique=True)
 
     objects = CategoryManager()
 
@@ -146,7 +146,7 @@ class Post(TimestampedModel):
     hero = models.ImageField(_('hero'), upload_to=post_hero_upload_to,
                              blank=True)
     subject = models.CharField(_('subject'), max_length=100)
-    slug = models.SlugField(_('slug'), max_length=100)
+    slug = models.SlugField(_('slug'), max_length=100, unique=True)
     summary = models.TextField(_('summary'), blank=True, null=True)
     body = models.TextField(_('body'))
 
@@ -167,9 +167,6 @@ class Post(TimestampedModel):
     @models.permalink
     def get_absolute_url(self):
         return ('hermes_post_detail', (), {
-            'year': self.created_on.year,
-            'month': self.created_on.strftime('%m'),
-            'day': self.created_on.strftime('%d'),
             'slug': self.slug,
         })
 
