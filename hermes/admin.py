@@ -5,9 +5,10 @@ from .models import Post, Category
 
 class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("subject", ), }
+    exclude = ('summary',)
     list_display = ('subject', 'category', 'created_on', 'modified_on')
     list_filter = ('created_on', 'modified_on', 'category')
-    search_fields = ['subject', 'slug']
+    search_fields = ('subject', 'slug')
 
 class CategoryAdmin(admin.ModelAdmin):
     include = ('title', 'parent', 'slug')
