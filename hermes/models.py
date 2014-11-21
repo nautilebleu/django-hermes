@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import Truncator, slugify
 from django.utils.translation import ugettext as _
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 from . import settings
 
@@ -130,7 +132,7 @@ class PostManager(models.Manager):
         try:
             return getattr(self.__class__, attr, *args)
         except AttributeError:
-            return getattr(self.get_query_set(), attr, *args)
+            return getattr(self.get_queryset(), attr, *args)
 
 class Post(TimestampedModel):
     subject = models.CharField(_('subject'), max_length=100)
@@ -207,3 +209,7 @@ class PostFile(models.Model):
 
     def __str__(self):
         return self.__unicode__()
+
+@receiver(pre_delete, sender=PostFile)
+def postfile_delete(sender, instance, **kwargs):
+    instance.f.delete(False)
