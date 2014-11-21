@@ -32,7 +32,7 @@ class CategoryManager(models.Manager):
 class Category(models.Model):
     title = models.CharField(_('title'), max_length=100)
     parent = models.ForeignKey('self', blank=True, null=True)
-    slug = models.CharField(blank=True, default='', max_length='500', unique=True)
+    slug = models.CharField(blank=True, default='', max_length='500')
 
     objects = CategoryManager()
 
@@ -132,23 +132,13 @@ class PostManager(models.Manager):
         except AttributeError:
             return getattr(self.get_query_set(), attr, *args)
 
-
-def post_hero_upload_to(instance, filename):
-    extension = os.path.splitext(filename)[1][1:]
-
-    return "hermes/heroes/{slug}_hero.{extension}".format(
-        slug=instance.slug,
-        extension=extension
-    )
-
-
 class Post(TimestampedModel):
     subject = models.CharField(_('subject'), max_length=100)
     slug = models.SlugField(_('slug'), max_length=100, unique=True)
     summary = models.TextField(_('summary'), blank=True, null=True)
     body = models.TextField(_('body'))
 
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, related_name="categories")
     author = models.ForeignKey(User)
 
     objects = PostManager()
@@ -195,3 +185,25 @@ class Post(TimestampedModel):
         if time == 0:
             time = 1
         return time
+
+
+def postfile_upload_to(instance, filename):
+    return "uploads/hermes/{article}/{filename}".format(
+        article=instance.post.pk,
+        filename=filename
+    )
+
+
+class PostFile(models.Model):
+    post = models.ForeignKey(Post, related_name='files')
+    f = models.FileField(upload_to=postfile_upload_to)
+
+    class Meta:
+        verbose_name = "PostFile"
+        verbose_name_plural = "PostFiles"
+
+    def __unicode__(self):
+        return u'File for {}'.format(self.post)
+
+    def __str__(self):
+        return self.__unicode__()
