@@ -191,7 +191,7 @@ class Post(TimestampedModel):
 
 def postfile_upload_to(instance, filename):
     return "uploads/hermes/{article}/{filename}".format(
-        article=instance.post.pk,
+        article=instance.pk,
         filename=filename
     )
 
