@@ -28,3 +28,8 @@ class PostDetail(DetailView):
     context_object_name = 'post'
     model = Post
     template_name = "hermes/post_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetail, self).get_context_data(**kwargs)
+        context['posts'] = Post.objects.exclude(pk=context['post'].pk)
+        return context
