@@ -59,7 +59,8 @@ class Category(models.Model):
         })
 
     def _generate_slug(self):
-        return "/".join([slugify(category.title) for category in self.hierarchy()]).lower()
+        return "/".join([slugify(category.title)
+                         for category in self.hierarchy()]).lower()
 
     @property
     def is_root(self):
@@ -133,6 +134,7 @@ class PostManager(models.Manager):
             return getattr(self.__class__, attr, *args)
         except AttributeError:
             return getattr(self.get_queryset(), attr, *args)
+
 
 class Post(TimestampedModel):
     subject = models.CharField(_('subject'), max_length=100)
