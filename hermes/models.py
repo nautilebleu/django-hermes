@@ -1,4 +1,3 @@
-import os
 import operator
 
 from django.contrib.auth.models import User
@@ -127,13 +126,19 @@ class PostQuerySet(models.query.QuerySet):
 
 class PostManager(models.Manager):
     def get_queryset(self):
-        return PostQuerySet(Post)
+        return PostQuerySet(self.model, using=self._db)
 
-    def __getattr__(self, attr, *args):
-        try:
-            return getattr(self.__class__, attr, *args)
-        except AttributeError:
-            return getattr(self.get_queryset(), attr, *args)
+    def in_category(self, category_slug):
+        return self.get_queryset().in_category(category_slug)
+
+    def created_on(self, year=None, month=None, day=None):
+        return self.get_queryset().created_on(year=year, month=month, day=day)
+
+    def recent(self, limit=None):
+        return self.get_queryset().recent(limit=limit)
+
+    def random(self, limit=None):
+        return self.get_queryset().random(limit=limit)
 
 
 class Post(TimestampedModel):
@@ -211,6 +216,7 @@ class PostFile(models.Model):
 
     def __str__(self):
         return self.__unicode__()
+
 
 @receiver(pre_delete, sender=PostFile)
 def postfile_delete(sender, instance, **kwargs):
