@@ -32,7 +32,8 @@ class CategoryManager(models.Manager):
 
 class Category(models.Model):
     title = models.CharField(_('title'), max_length=100)
-    parent = models.ForeignKey('self', blank=True, null=True)
+    parent = models.ForeignKey(
+        'self', blank=True, null=True, on_delete=models.CASCADE)
     slug = models.CharField(blank=True, default='', max_length=500)
 
     objects = CategoryManager()
@@ -147,8 +148,9 @@ class Post(TimestampedModel):
     summary = models.TextField(_('summary'), blank=True, null=True)
     body = models.TextField(_('body'))
 
-    category = models.ForeignKey(Category, related_name="categories")
-    author = models.ForeignKey(User)
+    category = models.ForeignKey(
+        Category, related_name="categories", on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     objects = PostManager()
 
@@ -204,7 +206,8 @@ def postfile_upload_to(instance, filename):
 
 
 class PostFile(models.Model):
-    post = models.ForeignKey(Post, related_name='files')
+    post = models.ForeignKey(
+        Post, related_name='files', on_delete=models.CASCADE)
     f = models.FileField(upload_to=postfile_upload_to)
 
     class Meta:
