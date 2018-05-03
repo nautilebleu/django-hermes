@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=100, verbose_name='title')),
                 ('slug', models.CharField(default='', max_length='500', blank=True)),
-                ('parent', models.ForeignKey(null=True, blank=True, to='hermes.Category')),
+                ('parent', models.ForeignKey(null=True, blank=True, to='hermes.Category', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'category',
@@ -37,8 +37,8 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(max_length=100, verbose_name='slug', unique=True)),
                 ('summary', models.TextField(null=True, verbose_name='summary', blank=True)),
                 ('body', models.TextField(verbose_name='body')),
-                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('category', models.ForeignKey(to='hermes.Category', related_name='categories')),
+                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL), on_delete=models.CASCADE),
+                ('category', models.ForeignKey(to='hermes.Category', related_name='categories'), on_delete=models.CASCADE),
             ],
             options={
                 'ordering': ('-modified_on',),
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('f', models.FileField(upload_to=hermes.models.postfile_upload_to)),
-                ('post', models.ForeignKey(to='hermes.Post', related_name='files')),
+                ('post', models.ForeignKey(to='hermes.Post', related_name='files'), on_delete=models.CASCADE),
             ],
             options={
                 'verbose_name': 'PostFile',
