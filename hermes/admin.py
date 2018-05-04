@@ -21,9 +21,13 @@ class PostAdmin(SummernoteModelAdmin):
         css = {
             'all': (
                 "http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700",
+                '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css',
                 settings.STATIC_URL + 'css/admin_post.css',
-                ),
+            ),
         }
+        js = [
+            settings.STATIC_URL + 'js/jquery.min.js',
+            '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js']
 
 
 class CategoryAdmin(admin.ModelAdmin):
