@@ -52,7 +52,7 @@ class Category(models.Model):
     def __str__(self):
         return self.__unicode__()
 
-    @models.permalink
+    # @models.permalink
     def get_absolute_url(self):
         return ('hermes_category_post_list', (), {
             'slug': self.slug,
@@ -163,7 +163,7 @@ class Post(TimestampedModel):
     def __str__(self):
         return self.__unicode__()
 
-    @models.permalink
+    # @models.permalink
     def get_absolute_url(self):
         return ('hermes_post_detail', (), {
             'slug': self.slug,
